@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ignore.dev/schema/v1.json",
+  "title": "IGNORE v1",
+  "description": "Single source of truth for file exclusion rules across all tools.",
+  "type": "object",
+  "required": ["$schema"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "https://ignore.dev/schema/v1.json"
+    },
+    "ruleSets": {
+      "type": "object",
+      "description": "Named, reusable pattern collections. Keys are referenced via @name.",
+      "additionalProperties": { "$ref": "#/definitions/patternList" }
+    },
+    "generate": {
+      "type": "object",
+      "description": "Output filename → pattern list. The CLI writes each key as a file next to IGNORE.",
+      "additionalProperties": { "$ref": "#/definitions/patternList" }
+    },
+    "ignore": {
+      "type": "object",
+      "description": "Tool/plugin identifier → pattern list. Consumed natively by plugins; no file is written.",
+      "additionalProperties": { "$ref": "#/definitions/patternList" }
+    }
+  },
+  "definitions": {
+    "patternList": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "A gitignore-syntax pattern, or @ruleSetName to inline a named ruleSet."
+      }
+    }
+  }
+}

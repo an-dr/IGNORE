@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ignore.dev/schema/v1.json",
+
+  // Named pattern collections — referenced via @name
+  "ruleSets": {
+    "vcs":     [".git/", ".svn/", ".hg/"],
+    "build":   ["dist/", "build/", "**/*.js.map", "**/*.d.ts.map"],
+    "deps":    ["node_modules/"],
+    "editor":  [".vscode/", ".idea/", "**/*.bkp", "**/*~"],
+    "os":      ["**/.DS_Store", "**/Thumbs.db", "**/desktop.ini"],
+    "secrets": ["**/*.env", "**/.env*", "**/*.key", "**/*.pem"]
+  },
+
+  // CLI writes these files next to IGNORE
+  "generate": {
+    ".gitignore":    ["@vcs", "@build", "@deps", "@editor", "@os", "@secrets"],
+    ".dockerignore": ["@vcs", "@build", "@deps", "@secrets", ".git/"]
+  },
+
+  // Native consumption by plugins/tools (no file generated)
+  "ignore": {
+    "vscode-sync": ["@secrets", "@os"],
+    "vscode-explorer": ["@build", "@deps", "@os"]
+  }
+}
